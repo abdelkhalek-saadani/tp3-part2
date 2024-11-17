@@ -1,0 +1,24 @@
+---
+- name: Deploy application to Kubernetes
+  hosts: kubernetes_master
+  tasks:
+    - name: Copy Kubernetes manifests
+      copy:
+        src: k8s-deployment.yml
+        dest: /tmp/k8s-deployment.yml
+
+    - name: Apply Kubernetes manifests
+      kubernetes.core.k8s:
+        state: present
+        src: /tmp/k8s-deployment.yml
+        kubeconfig: /root/.kube/config
+
+    - name: Verify deployment
+      kubernetes.core.k8s_info:
+        kind: Deployment
+        name: k8s-app
+        namespace: default
+      register: deployment_status
+      until: deployment_status.resources[0].status.availableReplicas == deployment_status.resources[0].status.replicas
+      retries: 30
+      delay: 10
