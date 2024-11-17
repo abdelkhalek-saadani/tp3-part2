@@ -33,14 +33,14 @@ pipeline {
             }
         }
         
-        stage('Deploy to Kubernetes') {
-            steps {
-                ansiblePlaybook(
-                    playbook: 'deploy.yml',
-                    inventory: 'inventory.ini'
-                )
-            }
-        }
+        // stage('Deploy to Kubernetes') {
+        //     steps {
+        //         ansiblePlaybook(
+        //             playbook: 'deploy.yml',
+        //             inventory: 'inventory.ini'
+        //         )
+        //     }
+        // }
         
         stage('Monitor') {
             steps {
