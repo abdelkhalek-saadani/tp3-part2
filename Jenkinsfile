@@ -2,15 +2,15 @@ pipeline {
     agent any
     
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-cred')
-        DOCKER_IMAGE = "your-dockerhub-username/your-app"
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        DOCKER_IMAGE = "abdelkhaleksaadanii/k8s-app"
         DOCKER_TAG = "${BUILD_NUMBER}"
     }
     
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/your-username/your-repo.git'
+                git branch: 'main', url: 'https://github.com/abdelkhalek-saadani/tp3-part2.git'
             }
         }
         
@@ -49,9 +49,5 @@ pipeline {
         }
     }
     
-    post {
-        always {
-            sh 'docker logout'
-        }
-    }
+    
 }
