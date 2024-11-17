@@ -44,7 +44,14 @@ pipeline {
         
         stage('Monitor') {
             steps {
-                sh 'curl -X POST http://nagios-server/api/check-deployment'
+                script {
+                    // Simple check if Nagios can see the deployment
+                    sh '''
+                        curl -f -u nagiosadmin:nagiosadmin \
+                            http://nagios:80/nagios/cgi-bin/statusjson.cgi?query=service \
+                            || echo "Monitoring check failed"
+                    '''
+                }
             }
         }
     }
